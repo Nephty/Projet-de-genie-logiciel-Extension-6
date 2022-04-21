@@ -23,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.json.JSONObject;
 
@@ -50,20 +51,21 @@ public class DueTransactionsSceneController extends Controller implements BackBu
     @FXML
     TableView<Transaction> dueTransactionsTableView;
     @FXML
-    Button backButton, payButton, payWithoutContactButton;
+    Button backButton, payButton, payWithoutContactButton, chooseFileButton;
 
     private ObservableList<Transaction> data = FXCollections.observableArrayList();
     static SubAccount selectedSubAccount;
+
+    final FileChooser fileChooser = new FileChooser();
 
     public void initialize() {
         receiverNameColumn.setCellValueFactory(new PropertyValueFactory<>("receiverName"));
         receiverIBANColumn.setCellValueFactory(new PropertyValueFactory<>("receiverIBAN"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         dueTransactionsTableView.setPlaceholder(new Label("No due transaction."));
-        updateDueTransactions();
     }
 
-    private void updateDueTransactions() {
+    private void updateDueTransactions(File file) {
         if (loadingTransactionsHistoryLabel.getOpacity() == 0.0) {
             int fadeInDuration = 1000;
             int sleepDuration = 1000;
@@ -80,7 +82,7 @@ public class DueTransactionsSceneController extends Controller implements BackBu
             // Fetch transactions and put them in the listview
             // Fade the label "updating history..." out to 0.0 opacity
 
-            ArrayList<String> parsedContent = readDueTransactionsAsStrings();
+            ArrayList<String> parsedContent = readDueTransactionsAsStrings(file);
             for (JSONObject jsonObject : convertReadDueTransactionsToJSONObjects(parsedContent)) {
                 data.add(new Transaction(Main.getUser().getFirstName() + " " + Main.getUser().getLastName(),
                         selectedSubAccount.getIBAN(), jsonObject.getString("recipient_name"),
@@ -93,14 +95,8 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
     }
 
-    private ArrayList<String> readDueTransactionsAsStrings() {
+    private ArrayList<String> readDueTransactionsAsStrings(File file) {
         String readContent = "";
-        File file = null;
-        try {
-            file = new File(new URL(Main.class.getResource("/client/duetransactions.json").toString()).toURI());
-        } catch (URISyntaxException | MalformedURLException e) {
-            e.printStackTrace();
-        }
 
         try {
             if (file != null) {
@@ -210,5 +206,9 @@ public class DueTransactionsSceneController extends Controller implements BackBu
         }
     }
 
-
+    @FXML
+    void handleChooseFileButtonClicked(MouseEvent mouseEvent) {
+        File selectedFile = fileChooser.showOpenDialog(Main.getStage());
+        updateDueTransactions(selectedFile);
+    }
 }
