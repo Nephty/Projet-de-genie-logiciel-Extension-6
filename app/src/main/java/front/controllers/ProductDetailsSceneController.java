@@ -4,7 +4,6 @@ import app.Main;
 import back.user.Account;
 import back.user.SubAccount;
 import back.user.Wallet;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import front.animation.FadeInTransition;
 import front.animation.threads.FadeOutThread;
 import front.navigation.Flow;
@@ -32,7 +31,7 @@ import static app.Main.appLocale;
  */
 public class ProductDetailsSceneController extends Controller implements BackButtonNavigator {
     @FXML
-    Button backButton, historyButton, fetchAccountsButton, transferButton, toggleButton, archivedAccountsButton;
+    Button backButton, historyButton, fetchAccountsButton, transferButton, toggleButton, archivedAccountsButton, dueTransactionsButton;
     @FXML
     TableView<Account> accountsTableView;
     @FXML
@@ -197,5 +196,14 @@ public class ProductDetailsSceneController extends Controller implements BackBut
     void handleArchivedAccountsButtonClicked(MouseEvent mouseEvent) {
         Scenes.ArchivedAccountsScene = SceneLoader.load("ArchivedAccountsScenes.fxml", appLocale);
         Main.setScene(Flow.forward(Scenes.ArchivedAccountsScene));
+    }
+
+    @FXML
+    void handleDueTransactionsButtonClicked(MouseEvent mouseEvent) {
+        if (accountsTableView.getSelectionModel().getSelectedItems().size() == 1) {
+            DueTransactionsSceneController.selectedAccountIBAN = accountsTableView.getSelectionModel().getSelectedItems().get(0).getIBAN();
+            Scenes.DueTransactionsScene = SceneLoader.load("DueTransactionsScene.fxml", appLocale);
+            Main.setScene(Flow.forward(Scenes.DueTransactionsScene));
+        }
     }
 }

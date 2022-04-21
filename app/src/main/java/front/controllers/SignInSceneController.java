@@ -67,13 +67,16 @@ public class SignInSceneController extends Controller implements BackButtonNavig
                     .field("password", passwordField.getText())
                     .field("role", "ROLE_USER")
                     .asString();
-            if(response.getStatus() != 403){
-                Main.errorCheck(response.getStatus());
-            }
         } catch (UnirestException e) {
             Main.ErrorManager(408);
         }
 
+        // If the data are incorrect (error 403)
+        if(response.getStatus() == 403){
+            incorrectUsernameOrPasswordLabel.setVisible(true);
+        } else{
+            Main.errorCheck(response.getStatus());
+        }
         // If the response is correct, initialise the tokens
         if (response != null) {
             if (response.getStatus() == 200) {
@@ -82,12 +85,14 @@ public class SignInSceneController extends Controller implements BackButtonNavig
                 JSONObject obj = new JSONObject(body);
                 Main.setToken(obj.getString("access_token"));
                 Main.setRefreshToken(obj.getString("refresh_token"));
+
                 // Creates the user
                 try {
                     Unirest.setTimeouts(0, 0);
                     HttpResponse<String> response2 = Unirest.get("https://flns-spring-test.herokuapp.com/api/user/" + usernameField.getText() + "?isUsername=true")
                             .header("Authorization", "Bearer " + Main.getToken())
                             .asString();
+                    // Check the HTTP code status to inform the user if there is an error
                     Main.errorCheck(response2.getStatus());
                     String body2 = response2.getBody();
                     JSONObject obj2 = new JSONObject(body2);
@@ -102,8 +107,10 @@ public class SignInSceneController extends Controller implements BackButtonNavig
                         break;
                     }
                 }
+
                 // Creates user's portfolio
                 Main.updatePortfolio();
+
                 // Load most of the scenes
                 Scenes.MainScreenScene = SceneLoader.load("MainScreenScene.fxml", appLocale);
                 Scenes.ChangePasswordScene = SceneLoader.load("ChangePasswordScene.fxml", appLocale);
