@@ -76,6 +76,9 @@
             <Label fx:id="insufficientBalanceLabel" alignment="CENTER" layoutX="1052.0" layoutY="192.0"
                    prefHeight="17.0" prefWidth="216.0" text="%DueTransactionsScene.InsufficientBalance"
                    textFill="#c80000" visible="false"/>
+            <Label fx:id="transferExecutedLabel" alignment="CENTER" layoutX="1043.0" layoutY="177.0" opacity="0.0"
+                   prefHeight="16.0" prefWidth="227.0" text="%DueTransactionsScene.TransferExecuted"
+                   textFill="#00c800"/>
         </AnchorPane>
     </Pane>
 </Pane>

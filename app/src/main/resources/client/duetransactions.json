@@ -3,21 +3,18 @@
     "amount": 25.0,
     "recipient_IBAN": "BE00000000000070",
     "recipient_name": "John Smith",
-    "message": "Here is your refund.",
-    "done": false
+    "message": "Here is your refund."
   },
   "transaction1": {
     "amount": 10.0,
     "recipient_IBAN": "BE00000000000070",
     "recipient_name": "Mary Collin",
-    "message": "Yesterday's restaurant.",
-    "done": false
+    "message": "Yesterday's restaurant."
   },
   "transaction2": {
     "amount": 200.0,
     "recipient_IBAN": "BE00000000000070",
     "recipient_name": "James & Jess",
-    "message": "Holiday's deposit",
-    "done": false
+    "message": "Holiday's deposit"
   }
 }

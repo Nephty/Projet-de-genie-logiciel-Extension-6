@@ -42,7 +42,7 @@ public class DueTransactionsSceneController extends Controller implements BackBu
     @FXML
     Label lastUpdateTimeLabel;
     @FXML
-    Label loadingTransactionsHistoryLabel, recipientIBANNotFoundLabel, insufficientBalanceLabel;
+    Label loadingTransactionsHistoryLabel, recipientIBANNotFoundLabel, insufficientBalanceLabel, transferExecutedLabel;
     @FXML
     TableColumn<Transaction, Double> amountColumn;
     @FXML
@@ -82,12 +82,10 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
             ArrayList<String> parsedContent = readDueTransactionsAsStrings();
             for (JSONObject jsonObject : convertReadDueTransactionsToJSONObjects(parsedContent)) {
-                if (!jsonObject.getBoolean("done")) {
-                    data.add(new Transaction(Main.getUser().getFirstName() + " " + Main.getUser().getLastName(),
-                            selectedSubAccount.getIBAN(), jsonObject.getString("recipient_name"),
-                            jsonObject.getString("recipient_IBAN"), jsonObject.getDouble("amount"),
-                            Date.valueOf(LocalDate.now()).toString(), Currencies.EUR, jsonObject.getString("message")));
-                }
+                data.add(new Transaction(Main.getUser().getFirstName() + " " + Main.getUser().getLastName(),
+                        selectedSubAccount.getIBAN(), jsonObject.getString("recipient_name"),
+                        jsonObject.getString("recipient_IBAN"), jsonObject.getDouble("amount"),
+                        Date.valueOf(LocalDate.now()).toString(), Currencies.EUR, jsonObject.getString("message")));
             }
             dueTransactionsTableView.setItems(FXCollections.observableArrayList(data));
             sleepAndFadeOutLoadingTransactionsLabelFadeThread.start(fadeInDuration, sleepDuration + fadeInDuration, loadingTransactionsHistoryLabel);
@@ -173,6 +171,16 @@ public class DueTransactionsSceneController extends Controller implements BackBu
         if (dueTransactionsTableView.getSelectionModel().getSelectedItems().size() == 1) {
             Transaction selectedTransaction = dueTransactionsTableView.getSelectionModel().getSelectedItems().get(0);
             try {
+                int fadeInDuration = 1000;
+                int sleepDuration = 1000;
+                FadeOutThread sleepAndFadeOutLoadingTransactionsLabelFadeThread;
+                // Fade the label "updating history..." in to 1.0 opacity
+                FadeInTransition.playFromStartOn(transferExecutedLabel, Duration.millis(fadeInDuration));
+                // We use a new Thread, so we can sleep the method for a few hundreds of milliseconds so that the label
+                // doesn't instantly go away when the notifications are retrieved.
+                sleepAndFadeOutLoadingTransactionsLabelFadeThread = new FadeOutThread();
+
+
                 HttpResponse<String> getRecipientIBANResponse = Unirest.get("https://flns-spring-test.herokuapp.com/api/account/" + selectedTransaction.getReceiverIBAN())
                         .header("Authorization", "Bearer " + Main.getToken())
                         .header("Content-Type", "application/json").asString();
@@ -186,51 +194,16 @@ public class DueTransactionsSceneController extends Controller implements BackBu
                     if (!insufficientBalanceLabel.isVisible()) insufficientBalanceLabel.setVisible(true);
                     return;
                 }
-                HttpResponse<String> reponse = Unirest.post("https://flns-spring-test.herokuapp.com/api/transaction")
+                Unirest.post("https://flns-spring-test.herokuapp.com/api/transaction")
                         .header("Authorization", "Bearer " + Main.getToken())
                         .header("Content-Type", "application/json")
                         .body("{\r\n    \"transactionTypeId\": 1,\r\n    \"senderIban\": \"" + selectedTransaction.getSenderIBAN() + "\",\r\n    \"recipientIban\": \"" + selectedTransaction.getReceiverIBAN() + "\",\r\n    \"currencyId\": 0,\r\n    \"transactionAmount\": " + selectedTransaction.getAmount() + ",\r\n    \"comments\": \"" + selectedTransaction.getMessage() + "\"\r\n}")
                         .asString();
                 if (insufficientBalanceLabel.isVisible()) insufficientBalanceLabel.setVisible(false);
-                ArrayList<JSONObject> oldContent = convertReadDueTransactionsToJSONObjects(readDueTransactionsAsStrings());
-                ArrayList<JSONObject> newContent = new ArrayList<>();
-                for (JSONObject jsonObject : oldContent) {
-                    JSONObject newObject = new JSONObject();
-                    newObject.append("amount", selectedTransaction.getAmount());
-                    newObject.append("recipient_IBAN", selectedTransaction.getReceiverIBAN());
-                    newObject.append("recipient_name", selectedTransaction.getReceiverName());
-                    newObject.append("message", selectedTransaction.getMessage());
-                    if (jsonObject.getString("message").equals(selectedTransaction.getMessage())
-                    && jsonObject.getString("recipient_IBAN").equals(selectedTransaction.getReceiverIBAN())
-                    && jsonObject.getInt("amount") == selectedTransaction.getAmount()) {
-                        newObject.append("done", true);
-                    } else {
-                        newObject.append("done", false);
-                    }
-                    newContent.add(newObject);
-                }
-                File userFile = null;
-                try {
-                    userFile = new File(new URL(Main.class.getResource("/client/duetransactions.json").toString()).toURI());
-                } catch (MalformedURLException | URISyntaxException e) {
-                    e.printStackTrace();
-                }
-                if (userFile != null) {
-                    try {
-                        FileOutputStream fileOutputSteam = new FileOutputStream(userFile);
-                        FileWriter fileWriter = new FileWriter(userFile);
-                        for (JSONObject jsonObject : newContent) {
-                            System.out.println("jsonObject.toString() = " + jsonObject.toString());
-                            fileWriter.write(jsonObject.toString());
-                            //fileOutputSteam.write(jsonObject.toString());
-                        }
-                        fileWriter.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
                 data.remove(selectedTransaction);
                 dueTransactionsTableView.setItems(data);
+
+                sleepAndFadeOutLoadingTransactionsLabelFadeThread.start(fadeInDuration, sleepDuration + fadeInDuration, transferExecutedLabel);
             } catch (UnirestException e) {
                 throw new RuntimeException(e);
             }
