@@ -19,7 +19,7 @@ public class Transaction {
     private final String message;
 
     /**
-     * Creates the Transaction object byt giving all the needed information
+     * Creates the Transaction object by giving all the needed information
      *
      * @param ID           The ID of the transaction
      * @param senderName   The String of the senderName
@@ -43,6 +43,29 @@ public class Transaction {
         this.message = message;
     }
 
+    /**
+     * Creates the Transaction object by giving all the needed information
+     *
+     * @param senderName   The String of the senderName
+     * @param senderIBAN   The String of the sender IBAN
+     * @param receiverName The String of the receiver name
+     * @param receiverIBAN The String of the receiver IBAN
+     * @param amount       The amount of the transaction
+     * @param sendingDate  The String of the sending date
+     * @param currency     The int corresponding to the type of currency
+     * @param message      The String of the message
+     */
+    public Transaction(String senderName, String senderIBAN, String receiverName, String receiverIBAN, double amount, String sendingDate, Currencies currency, String message) {
+        this.senderName = senderName;
+        this.senderIBAN = senderIBAN;
+        this.receiverName = receiverName;
+        this.receiverIBAN = receiverIBAN;
+        this.amount = amount;
+        this.sendingDate = sendingDate;
+        this.currency = currency;
+        this.message = message;
+        this.ID = -1;
+    }
 
     /**
      * @return A String to display the transaction information

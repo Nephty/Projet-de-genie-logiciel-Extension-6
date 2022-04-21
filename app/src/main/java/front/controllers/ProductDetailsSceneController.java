@@ -201,7 +201,7 @@ public class ProductDetailsSceneController extends Controller implements BackBut
     @FXML
     void handleDueTransactionsButtonClicked(MouseEvent mouseEvent) {
         if (accountsTableView.getSelectionModel().getSelectedItems().size() == 1) {
-            DueTransactionsSceneController.selectedAccountIBAN = accountsTableView.getSelectionModel().getSelectedItems().get(0).getIBAN();
+            DueTransactionsSceneController.selectedSubAccount = accountsTableView.getSelectionModel().getSelectedItems().get(0).getSubAccountList().get(0);
             Scenes.DueTransactionsScene = SceneLoader.load("DueTransactionsScene.fxml", appLocale);
             Main.setScene(Flow.forward(Scenes.DueTransactionsScene));
         }

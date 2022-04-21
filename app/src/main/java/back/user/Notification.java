@@ -101,4 +101,8 @@ public class Notification extends Communication {
     public boolean isFlagged() {
         return flag;
     }
+
+    public String getSenderName() {
+        return senderName;
+    }
 }
