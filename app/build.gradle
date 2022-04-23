@@ -35,6 +35,8 @@ dependencies {
     // For password change
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // For generating QRCodes
+    implementation 'com.google.zxing:zxingorg:3.4.1'
 }
 
 application {

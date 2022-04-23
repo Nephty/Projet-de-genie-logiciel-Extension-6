@@ -28,9 +28,14 @@ import javafx.util.Duration;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -159,7 +164,16 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
     @FXML
     void handlePayButtonMouseClicked(MouseEvent mouseEvent) {
-
+        // TODO : finish this method
+        ArrayList<JSONObject> transactions = convertReadDueTransactionsToJSONObjects(readDueTransactionsAsStrings(new File("/home/Nephty/Java/Projects/Projet-de-genie-logiciel-Extension-6/app/src/main/resources/client/duetransactions.json")));
+        BitMatrix matrix = null;
+        try {
+            matrix = new MultiFormatWriter().encode(new String(transactions.get(0).toString().getBytes("UTF-8"), "UTF-8"), BarcodeFormat.QR_CODE, 200, 200);
+        } catch (WriterException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String path = "/home/Nephty/Documents";
+        if (matrix != null) MatrixToImageWriter.writeToPath(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path + "yes"));
     }
 
     @FXML
