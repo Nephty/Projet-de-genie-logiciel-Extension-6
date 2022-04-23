@@ -37,6 +37,12 @@ public class ExportHistorySceneController extends Controller implements BackButt
     private File selectedDirectory;
     final DirectoryChooser directoryChooser = new DirectoryChooser();
 
+    public void initialize() {
+        selectedDirectory = null;
+        exportDone = false;
+        directoryChosen = false;
+    }
+
     public static void setExportData(ArrayList<Transaction> arrayList) {
         exportData = arrayList;
     }

@@ -36,6 +36,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -100,43 +104,6 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
     }
 
-    private ArrayList<String> readDueTransactionsAsStrings(File file) {
-        String readContent = "";
-
-        try {
-            if (file != null) {
-                StringBuilder bobTheBuilder = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        bobTheBuilder.append(line).append("\n");
-                    }
-                }
-                readContent = bobTheBuilder.toString();
-            } else {
-                throw new FileNotFoundException();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        readContent = readContent.replace("\n", "");
-        readContent = readContent.replaceAll("\\s\\s", "");
-        readContent = readContent.substring(1, readContent.length() - 1);
-        return Portfolio.JSONArrayParser(readContent);
-    }
-
-    private ArrayList<JSONObject> convertReadDueTransactionsToJSONObjects(ArrayList<String> parsedContent) {
-        ArrayList<JSONObject> res = new ArrayList<>();
-        for (String s : parsedContent) {
-            while (s.charAt(0) != '{') {
-                s = s.substring(1);
-            }
-            res.add(new JSONObject(s));
-        }
-        return res;
-    }
-
     @Override
     public void handleBackButtonNavigation(MouseEvent mouseEvent) {
         Main.setScene(Flow.back());
@@ -165,15 +132,6 @@ public class DueTransactionsSceneController extends Controller implements BackBu
     @FXML
     void handlePayButtonMouseClicked(MouseEvent mouseEvent) {
         // TODO : finish this method
-        ArrayList<JSONObject> transactions = convertReadDueTransactionsToJSONObjects(readDueTransactionsAsStrings(new File("/home/Nephty/Java/Projects/Projet-de-genie-logiciel-Extension-6/app/src/main/resources/client/duetransactions.json")));
-        BitMatrix matrix = null;
-        try {
-            matrix = new MultiFormatWriter().encode(new String(transactions.get(0).toString().getBytes("UTF-8"), "UTF-8"), BarcodeFormat.QR_CODE, 200, 200);
-        } catch (WriterException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String path = "/home/Nephty/Documents";
-        if (matrix != null) MatrixToImageWriter.writeToPath(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path + "yes"));
     }
 
     @FXML

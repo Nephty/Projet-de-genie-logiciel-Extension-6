@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- @author Arnaud MOREAU -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0"
+      prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.2"
+      fx:controller="front.controllers.GenerateQRCodeSceneController">
+    <Pane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: rgb(125, 125, 135);">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    onKeyReleased="#handleComponentKeyReleased" prefHeight="70.0" prefWidth="1280.0">
+            <Button fx:id="backButton" layoutX="14.0" layoutY="17.0" onKeyReleased="#handleComponentKeyReleased"
+                    onMouseClicked="#handleBackButtonClicked" onMouseEntered="#handleButtonMouseEntered"
+                    onMouseExited="#handleButtonMouseExited" prefHeight="36.0" prefWidth="120.0"
+                    style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
+                    text="%common.backButton" textFill="#0a0a14">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <effect>
+                    <InnerShadow height="5.0" offsetX="-2.5" offsetY="-2.5" radius="2.0" width="5.0"/>
+                </effect>
+            </Button>
+        </AnchorPane>
+        <AnchorPane layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    onKeyReleased="#handleComponentKeyReleased" prefHeight="650.0" prefWidth="1280.0">
+            <TextField fx:id="amountField" layoutX="178.0" layoutY="140.0" onKeyPressed="#handleComponentKeyReleased"
+                       onKeyReleased="#handleComponentKeyReleased" prefHeight="60.0" prefWidth="435.0"
+                       promptText="%TransferScene.amountField"
+                       style="-fx-background-color: rgb(255, 239, 223); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </TextField>
+            <Label fx:id="invalidAmountLabel" layoutX="181.0" layoutY="120.0" prefHeight="16.0" prefWidth="435.0"
+                   text="%TransferScene.invalidAmountLabel" textFill="#c80000" visible="false"/>
+            <TextField fx:id="IBANField" layoutX="181.0" layoutY="230.0" onKeyPressed="#handleComponentKeyReleased"
+                       onKeyReleased="#handleComponentKeyReleased" prefHeight="60.0" prefWidth="435.0"
+                       promptText="%TransactionsHistoryScene.ReceiverIBANColumn"
+                       style="-fx-background-color: rgb(255, 239, 223); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </TextField>
+            <Label fx:id="invalidIBAN" layoutX="181.0" layoutY="211.0" prefHeight="16.0" prefWidth="435.0"
+                   text="%TransferScene.invalidIBAN" textFill="#c80000" visible="false"/>
+            <Label fx:id="invalidPasswordLabel" layoutX="181.0" layoutY="301.0" prefHeight="17.0" prefWidth="435.0"
+                   text="%TransferScene.incorrectPassword" textFill="#c80000" visible="false"/>
+            <TextField fx:id="messageField" layoutX="668.0" layoutY="140.0" onKeyPressed="#handleComponentKeyReleased"
+                       onKeyReleased="#handleComponentKeyReleased" prefHeight="60.0" prefWidth="435.0"
+                       promptText="%TransferScene.messageField"
+                       style="-fx-background-color: rgb(255, 239, 223); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </TextField>
+            <Label fx:id="invalidMessageLabel" layoutX="672.0" layoutY="120.0" prefHeight="16.0" prefWidth="435.0"
+                   text="%TransferScene.invalidMessageLabel" textFill="#c80000" visible="false"/>
+            <TextField fx:id="recipientField" layoutX="668.0" layoutY="230.0" onKeyPressed="#handleComponentKeyReleased"
+                       onKeyReleased="#handleComponentKeyReleased" prefHeight="60.0" prefWidth="435.0"
+                       promptText="%TransactionsHistoryScene.ReceiverNameColumn"
+                       style="-fx-background-color: rgb(255, 239, 223); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </TextField>
+            <Label fx:id="invalidRecipientLabel" layoutX="672.0" layoutY="211.0" prefHeight="16.0" prefWidth="435.0"
+                   text="%TransferScene.invalidRecipientLabel" textFill="#c80000" visible="false"/>
+            <Button fx:id="generateButton" layoutX="492.0" layoutY="535.0" onKeyReleased="#handleComponentKeyReleased"
+                    onMouseClicked="#handleGenerateButtonClicked" onMouseEntered="#handleButtonMouseEntered"
+                    onMouseExited="#handleButtonMouseExited" prefHeight="52.0" prefWidth="296.0"
+                    style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;"
+                    text="%GenerateQRCodeScene.Generate" textFill="#0a0a14">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+                <effect>
+                    <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0"/>
+                </effect>
+            </Button>
+            <Label fx:id="QRCodeGeneratedLabel" layoutX="493.0" layoutY="590.0" prefHeight="17.0" prefWidth="296.0"
+                   text="%GenerateQRCodeScene.QRCodeGenerated" textFill="#00c800" visible="false"/>
+            <Label fx:id="charactersLeftLabel" layoutX="863.0" layoutY="201.0"
+                   text="%TransferScene.charactersLeftLabel"/>
+
+            <Label fx:id="choosePathLabel" alignment="CENTER" layoutX="433.0" layoutY="368.0" prefHeight="36.0"
+                   prefWidth="200.0"
+                   style="-fx-background-color: rgb(230, 230, 230); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
+                   text="%ExportHistoryScene.choosePathLabel"/>
+            <Label fx:id="noPathSelectedLabel" layoutX="654.0" layoutY="233.0" prefHeight="17.0" prefWidth="167.0"
+                   text="%ExportHistoryScene.noPathSelectedLabel" textFill="#c80000" visible="false"/>
+            <Button fx:id="choosePathButton" layoutX="650.0" layoutY="368.0" onKeyReleased="#handleComponentKeyReleased"
+                    onMouseClicked="#handleChoosePathButtonClicked" onMouseEntered="#handleButtonMouseEntered"
+                    onMouseExited="#handleButtonMouseExited" prefHeight="36.0" prefWidth="200.0"
+                    style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
+                    text="%ExportHistoryScene.choosePathButton" textFill="#0a0a14">
+                <effect>
+                    <InnerShadow height="5.0" offsetX="-2.5" offsetY="-2.5" radius="2.0" width="5.0"/>
+                </effect>
+            </Button>
+            <Label fx:id="exportLocationLabel" alignment="CENTER" layoutX="433.0" layoutY="421.0"
+                   onKeyReleased="#handleComponentKeyReleased" prefHeight="36.0" prefWidth="417.0"
+                   style="-fx-background-color: rgb(230, 230, 230); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
+                   text="%ExportHistoryScene.exportLocationLabel"/>
+        </AnchorPane>
+    </Pane>
+</Pane>

@@ -1,5 +1,10 @@
 package front.controllers;
 
+import app.Main;
+import back.user.Portfolio;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import front.animation.FadeInTransition;
 import front.animation.threads.FadeOutThread;
 import javafx.fxml.FXML;
@@ -7,7 +12,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -159,6 +167,138 @@ public class Controller {
     }
 
     /**
+     * Checks if the given <code>String</code> is a valid amount.
+     * Requirements :
+     * - string must not be empty
+     * - string must not be null
+     * - string must only contain characters from 0-9
+     * - string must contain at least one digit that is not 0
+     * - string must contain at most one dot (.)
+     * - string length must be at most 12
+     *
+     * @param amount - <code>String</code> - the amount to check
+     * @return <code>boolean</code> - whether the given amount is a valid amount or not
+     */
+    public static boolean isValidAmount(String amount) {
+        if (amount == null) return false;
+        if (amount.equals("") || (!amount.matches("^[0-9.]*$")) || amount.length() > 12) return false;
+        boolean hasOneDot = false;
+        boolean hasOnlyZeros = true;
+        for (int i = 0; i < amount.length(); i++) {
+            if (amount.charAt(i) == '.' && hasOneDot) return false;
+            if (amount.charAt(i) == '.') hasOneDot = true;
+            if (amount.charAt(i) >= 49 && amount.charAt(i) <= 57) hasOnlyZeros = false;
+        }
+        return !hasOnlyZeros;
+    }
+
+    /**
+     * Checks if the given <code>String</code> is a valid recipient.
+     * Requirements :
+     * - string must only contain characters from a-z and from A-Z
+     *
+     * @param recipient - <code>String</code> - the recipient to check
+     * @return <code>boolean</code> - whether the given recipient is a valid recipient or not
+     */
+    public static boolean isValidRecipient(String recipient) {
+        if (recipient == null) return true;
+        return recipient.matches("^[a-zA-Z]*$");
+    }
+
+    /**
+     * Checks if the given <code>String</code> is a valid IBAN.
+     * Requirements :
+     * - string must not be empty
+     * - string must not be null
+     * - string must only contain characters from a-z, from A-Z and from 0-9
+     * - string must follow this format : AAXXXXXXXXXXXXXX where A is a letter and X is a digit
+     *
+     * @param IBAN - <code>String</code> - the IBAN to check
+     * @return <code>boolean</code> - whether the given IBAN is a valid IBAN or not
+     */
+    public static boolean isValidIBAN(String IBAN) {
+        if (IBAN == null) return false;
+        if ((!IBAN.matches("^[a-zA-Z0-9]*$")) || !(IBAN.length() == 16))
+            return false;  // IBAN.length() == 16 already checks IBAN != ""
+        for (int i = 0; i < IBAN.length(); i++) {
+            switch (i) {
+                case 0:
+                case 1:
+                    if (!Character.isAlphabetic(IBAN.charAt(i))) return false;
+                    break;
+                default:
+                    if (!Character.isDigit(IBAN.charAt(i))) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the given <code>String</code> is a valid message.
+     * Requirements :
+     * - string must only contain characters with ASCII code between 32 and 126 both included
+     * - string length must be at most 256
+     *
+     * @param message - <code>String</code> - the message to check
+     * @return <code>boolean</code> - whether the given message is a valid message or not
+     */
+    public static boolean isValidMessage(String message) {
+        if (message == null) return true;
+        if (message.equals("")) return true;
+        if (message.length() > 256) return false;
+        for (int i = 0; i < message.length(); i++) {
+            if (!(message.charAt(i) >= 32 && message.charAt(i) <= 126)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the given <code>String</code> is a valid date.
+     * Requirements :
+     * - string must only contain characters from 0-9 or dashes (-) or dots (.) (dashes and dots are mutually exclusive :
+     * the string either contains dots or dashes, but not both)
+     * - string must follow this format : XX.XX.XXXX or XX-XX-XXXX where X is a digit
+     * - the year cannot be less than the current year and cannot be more than 1 year in the future
+     *
+     * @param date - <code>String</code> - the date to check
+     * @return <code>boolean</code> - whether the given date is a valid date or not
+     */
+    public static boolean isValidDate(String date) {
+        if (date == null) return true;
+        if (date.equals("")) return true;
+        if (!date.matches("^[0-9-.]*$") || !(date.length() == 10)) return false;
+        boolean hasDot = false, hasDash = false;
+        for (int i = 0; i < date.length(); i++) {
+            switch (i) {
+                case 0:
+                case 1:
+                case 3:
+                case 4:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    if (!Character.isDigit(date.charAt(i))) return false;
+                    break;
+                case 2:
+                case 5:
+                    if (date.charAt(i) == '.') hasDot = true;
+                    if (date.charAt(i) == '-') hasDash = true;
+                    if (date.charAt(i) == '.' && hasDash) return false;
+                    if (date.charAt(i) == '-' && hasDot) return false;
+                    break;
+            }
+        }
+        int day = Integer.parseInt(date.charAt(0) + "" + date.charAt(1));
+        int month = Integer.parseInt(date.charAt(3) + "" + date.charAt(4));
+        int year = Integer.parseInt(date.charAt(6) + "" + date.charAt(7) + date.charAt(8) + date.charAt(9));
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        if (!(day <= 31 && day >= 1)) return false;
+        if (!(month <= 12 && month >= 0)) return false;
+        return year >= currentYear && year <= currentYear + 1;
+    }
+
+    /**
      * Checks if the given passwords match and are not empty.
      *
      * @param password             - <code>String</code> - the password
@@ -197,5 +337,74 @@ public class Controller {
         FadeInTransition.playFromStartOn(node, Duration.millis(fadeInDuration));
         sleepAndFadeOutFadeThread = new FadeOutThread();
         sleepAndFadeOutFadeThread.start(fadeOutDuration, sleepDuration + fadeInDuration, node);
+    }
+
+    /**
+     * Using an ArrayList of Strings that are the read content of a JSON file, creates JSON objects and puts them in
+     * an ArrayList
+     * @param parsedContent an ArrayList of Strings that are the read content of a JSON file
+     * @return An ArrayList of JSONObjects that are made of the given Strings
+     */
+    protected ArrayList<JSONObject> convertReadDueTransactionsToJSONObjects(ArrayList<String> parsedContent) {
+        ArrayList<JSONObject> res = new ArrayList<>();
+        for (String s : parsedContent) {
+            while (s.charAt(0) != '{') {
+                s = s.substring(1);
+            }
+            res.add(new JSONObject(s));
+        }
+        return res;
+    }
+
+    /**
+     * Reads the given file and puts every read JSONObject in an ArrayList.
+     * @param file the file to read
+     * @return an ArrayList containing all the read JSONObjects
+     */
+    protected ArrayList<String> readDueTransactionsAsStrings(File file) {
+        String readContent = "";
+
+        try {
+            if (file != null) {
+                StringBuilder bobTheBuilder = new StringBuilder();
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        bobTheBuilder.append(line).append("\n");
+                    }
+                }
+                readContent = bobTheBuilder.toString();
+            } else {
+                throw new FileNotFoundException();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        readContent = readContent.replace("\n", "");
+        readContent = readContent.replaceAll("\\s\\s", "");
+        readContent = readContent.substring(1, readContent.length() - 1);
+        return Portfolio.JSONArrayParser(readContent);
+    }
+
+    protected boolean isValidPassword(String password) {
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest.post("https://flns-spring-test.herokuapp.com/api/login")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .field("username", Main.getUser().getUsername())
+                    .field("password", password)
+                    .field("role", "ROLE_USER")
+                    .asString();
+            // Check the HTTP code status to inform the user if there is an error
+            Main.errorCheck(response.getStatus());
+        } catch (UnirestException e) {
+            Main.ErrorManager(408);
+        }
+
+        if (response != null) {
+            return response.getStatus() == 200;
+        }
+        return false;
     }
 }
