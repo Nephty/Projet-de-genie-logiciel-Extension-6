@@ -97,11 +97,11 @@ public class GenerateQRCodeSceneController extends Controller implements BackBut
 
         if (noLabelVisible() && directoryChosen) {
             // Creates the transfer if everything is correct
-            createQRCodeFromText("{\"amount\":" + amount + ",\"recipient_IBAN\":\"" + IBAN + "\",\"recipient_name\":\"" + recipient + ",\"message\":\"" + message + "\"}", selectedDirectory);
+            createQRCodeFromText("{\"amount\":\"" + amount + "\",\"recipient_IBAN\":\"" + IBAN + "\",\"recipient_name\":\"" + recipient + "\",\"message\":\"" + message + "\"}", selectedDirectory);
             QRCodeGenerated = true;
             Main.setScene(Flow.back());
-            Main.setScene(Flow.back());
-            Main.setScene(Flow.back());
+            exportLocationLabel.setText("Location not set.");
+            // TODO : missing translations, check if every word is ok on the scene or if we need to add a new entry to .properties files
             clearAllTextFields();
         }
     }
@@ -120,7 +120,7 @@ public class GenerateQRCodeSceneController extends Controller implements BackBut
         }
         if (matrix != null) {
             try {
-                MatrixToImageWriter.writeToPath(matrix, "png", Paths.get(new File(directory + "/generated_qr_code_" + DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss").format(LocalDateTime.now())).getAbsolutePath()));
+                MatrixToImageWriter.writeToPath(matrix, "png", Paths.get(new File(directory + "/generated_qr_code_" + DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss").format(LocalDateTime.now()) + ".png").getAbsolutePath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

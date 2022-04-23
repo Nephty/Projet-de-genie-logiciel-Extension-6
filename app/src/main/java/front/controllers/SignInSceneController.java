@@ -120,6 +120,7 @@ public class SignInSceneController extends Controller implements BackButtonNavig
                 Scenes.EnterPINScene = SceneLoader.load("EnterPINScene.fxml", appLocale);
                 Scenes.VisualizeToolScene = SceneLoader.load("VisualizeToolScene.fxml", appLocale);
                 Scenes.GenerateQRCodeScene = SceneLoader.load("GenerateQRCodeScene.fxml", appLocale);
+                Scenes.ReadQRCodeScene = SceneLoader.load("ReadQRCodeScene.fxml", appLocale);
                 Main.setScene(Flow.forward(Scenes.MainScreenScene));
                 // Empty username text field and password field
                 usernameField.setText("");

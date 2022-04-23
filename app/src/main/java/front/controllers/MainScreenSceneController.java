@@ -15,7 +15,7 @@ import static app.Main.appLocale;
  */
 public class MainScreenSceneController extends Controller {
     @FXML
-    Button changePasswordButton, notificationsButton, requestsButton, visualizeToolButton, financialProductsButton, signOutButton, generateQRCodeButton;
+    Button changePasswordButton, notificationsButton, requestsButton, visualizeToolButton, financialProductsButton, signOutButton, generateQRCodeButton, readQRCodeButton;
 
     @FXML
     void handleSignOutButtonClicked(MouseEvent event) {
@@ -53,5 +53,9 @@ public class MainScreenSceneController extends Controller {
     @FXML
     void handleGenerateQRCodeButtonClicked(MouseEvent event) {
         Main.setScene(Flow.forward(Scenes.GenerateQRCodeScene));
+    }
+
+    public void handleReadQRCodeButtonClicked(MouseEvent event) {
+        Main.setScene(Flow.forward(Scenes.ReadQRCodeScene));
     }
 }

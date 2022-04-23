@@ -96,7 +96,7 @@ public class RequestAccountRemovalSceneController extends Controller implements 
     }
 
     @FXML
-    void handleSWIFTComboBoxMouseClicked(MouseEvent mouseEvent) {
+    void handleAccountsComboBoxMouseClicked(MouseEvent mouseEvent) {
         requestSent = false;
     }
 }

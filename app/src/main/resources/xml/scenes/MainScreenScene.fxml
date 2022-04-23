@@ -20,7 +20,7 @@
             </Button>
         </AnchorPane>
         <AnchorPane layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0">
-            <Button fx:id="financialProductsButton" layoutX="465.0" layoutY="51.0" onMouseClicked="#handleFinancialProductsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.financialProductsButton" textFill="#0a0a14">
+            <Button fx:id="financialProductsButton" layoutX="270.0" layoutY="131.0" onMouseClicked="#handleFinancialProductsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.financialProductsButton" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -28,7 +28,7 @@
                     <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
                 </effect>
             </Button>
-            <Button fx:id="visualizeToolButton" layoutX="465.0" layoutY="146.0" onMouseClicked="#handleVisualizeToolButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%FinancialProductsScene.visualizeToolButton" textFill="#0a0a14">
+            <Button fx:id="visualizeToolButton" layoutX="270.0" layoutY="226.0" onMouseClicked="#handleVisualizeToolButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%FinancialProductsScene.visualizeToolButton" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -36,7 +36,7 @@
                     <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
                 </effect>
             </Button>
-            <Button fx:id="requestsButton" layoutX="465.0" layoutY="241.0" onMouseClicked="#handleRequestsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.requestsButton" textFill="#0a0a14">
+            <Button fx:id="requestsButton" layoutX="660.0" layoutY="131.0" onMouseClicked="#handleRequestsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.requestsButton" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -44,7 +44,7 @@
                     <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
                 </effect>
             </Button>
-            <Button fx:id="notificationsButton" layoutX="465.0" layoutY="336.0" onMouseClicked="#handleNotificationsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.notificationsButton" textFill="#0a0a14">
+            <Button fx:id="notificationsButton" layoutX="660.0" layoutY="226.0" onMouseClicked="#handleNotificationsButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.notificationsButton" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -52,7 +52,7 @@
                     <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
                 </effect>
             </Button>
-            <Button fx:id="generateQRCodeButton" layoutX="465.0" layoutY="431.0" onMouseClicked="#handleGenerateQRCodeButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.generateQRCode" textFill="#0a0a14">
+            <Button fx:id="generateQRCodeButton" layoutX="270.0" layoutY="321.0" onMouseClicked="#handleGenerateQRCodeButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.GenerateQRCode" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -60,7 +60,15 @@
                     <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
                 </effect>
             </Button>
-            <Button fx:id="changePasswordButton" layoutX="492.0" layoutY="547.0" onMouseClicked="#handleChangePasswordButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="52.0" prefWidth="296.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%common.changePasswordButton" textFill="#0a0a14">
+            <Button fx:id="readQRCodeButton" layoutX="660.0" layoutY="321.0" onMouseClicked="#handleReadQRCodeButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%MainScreenScene.ReadQRCode" textFill="#0a0a14">
+                <font>
+                    <Font size="20.0" />
+                </font>
+                <effect>
+                    <InnerShadow height="10.0" offsetX="-3.5" offsetY="-3.5" radius="4.5" width="10.0" />
+                </effect>
+            </Button>
+            <Button fx:id="changePasswordButton" layoutX="492.0" layoutY="499.0" onMouseClicked="#handleChangePasswordButtonClicked" onMouseEntered="#handleButtonMouseEntered" onMouseExited="#handleButtonMouseExited" prefHeight="52.0" prefWidth="296.0" style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 2.5; -fx-border-insets: -2.5; -fx-border-radius: 10;" text="%common.changePasswordButton" textFill="#0a0a14">
                 <font>
                     <Font size="20.0" />
                 </font>
