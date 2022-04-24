@@ -101,7 +101,6 @@ public class GenerateQRCodeSceneController extends Controller implements BackBut
             QRCodeGenerated = true;
             Main.setScene(Flow.back());
             exportLocationLabel.setText("Location not set.");
-            // TODO : missing translations, check if every word is ok on the scene or if we need to add a new entry to .properties files
             clearAllTextFields();
         }
     }

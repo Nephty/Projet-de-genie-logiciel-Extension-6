@@ -94,6 +94,7 @@ public class ProductDetailsSceneController extends Controller implements BackBut
     void handleTransferButtonClicked(MouseEvent event) {
         if (accountsTableView.getSelectionModel().getSelectedItems().size() == 1) {
             if (accountsTableView.getSelectionModel().getSelectedItem().isActivated()) {
+                Scenes.TransferScene = SceneLoader.load("TransferScene.fxml", appLocale);
                 Main.setScene(Flow.forward(Scenes.TransferScene));
                 accountInactiveLabel.setVisible(false);
                 Main.setCurrentAccount(accountsTableView.getSelectionModel().getSelectedItems().get(0));

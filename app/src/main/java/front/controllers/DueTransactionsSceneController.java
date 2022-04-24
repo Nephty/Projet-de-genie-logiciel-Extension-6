@@ -12,9 +12,12 @@ import front.animation.FadeInTransition;
 import front.animation.threads.FadeOutThread;
 import front.navigation.Flow;
 import front.navigation.navigators.BackButtonNavigator;
+import front.scenes.SceneLoader;
+import front.scenes.Scenes;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -44,6 +47,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * @author Arnaud MOREAU
@@ -93,10 +97,12 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
             ArrayList<String> parsedContent = readDueTransactionsAsStrings(file);
             for (JSONObject jsonObject : convertReadDueTransactionsToJSONObjects(parsedContent)) {
+                String today = Date.valueOf(LocalDate.now()).toString();
+                today = today.substring(8) + "-" + today.substring(5, 7) + "-" + today.substring(0, 4);
                 data.add(new Transaction(Main.getUser().getFirstName() + " " + Main.getUser().getLastName(),
                         selectedSubAccount.getIBAN(), jsonObject.getString("recipient_name"),
                         jsonObject.getString("recipient_IBAN"), jsonObject.getDouble("amount"),
-                        Date.valueOf(LocalDate.now()).toString(), Currencies.EUR, jsonObject.getString("message")));
+                        today, Currencies.EUR, jsonObject.getString("message")));
             }
             dueTransactionsTableView.setItems(FXCollections.observableArrayList(data));
             sleepAndFadeOutLoadingTransactionsLabelFadeThread.start(fadeInDuration, sleepDuration + fadeInDuration, loadingTransactionsHistoryLabel);
@@ -131,7 +137,15 @@ public class DueTransactionsSceneController extends Controller implements BackBu
 
     @FXML
     void handlePayButtonMouseClicked(MouseEvent mouseEvent) {
-        // TODO : finish this method
+        if (dueTransactionsTableView.getSelectionModel().getSelectedItems().size() == 1) {
+            TransferSceneController.comesFromDuePaymentsScene = true;
+            TransferSceneController.duePayment = dueTransactionsTableView.getSelectionModel().getSelectedItems().get(0);
+            TransferSceneController.selectedAccountAmount = selectedSubAccount.getAmount();
+            Scenes.TransferScene = SceneLoader.load("TransferScene.fxml", Main.appLocale);
+            Main.setScene(Flow.forward(Scenes.TransferScene));
+            data.remove(dueTransactionsTableView.getSelectionModel().getSelectedItems().get(0));
+            dueTransactionsTableView.setItems(data);
+        }
     }
 
     @FXML

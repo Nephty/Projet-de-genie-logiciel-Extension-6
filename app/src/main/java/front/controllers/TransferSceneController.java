@@ -2,6 +2,7 @@ package front.controllers;
 
 import app.Main;
 import back.user.ErrorHandler;
+import back.user.Transaction;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import org.mockito.internal.matchers.Null;
 
 import java.util.Objects;
 
@@ -34,6 +36,31 @@ public class TransferSceneController extends Controller implements BackButtonNav
 
     private boolean transferExecuted = false;
 
+    public static boolean comesFromDuePaymentsScene = false;
+    public static Transaction duePayment;
+    public static double selectedAccountAmount;
+
+    public void initialize() {
+        if (comesFromDuePaymentsScene) {
+            amountField.setText(String.valueOf(duePayment.getAmount()));
+            amountField.setDisable(true);
+            IBANField.setText(duePayment.getReceiverIBAN());
+            IBANField.setDisable(true);
+            messageField.setText(duePayment.getMessage());
+            messageField.setDisable(true);
+            recipientField.setText(duePayment.getReceiverName());
+            recipientField.setDisable(true);
+            dateField.setText(duePayment.getSendingDate());
+            dateField.setDisable(true);
+        } else {
+            amountField.setDisable(false);
+            IBANField.setDisable(false);
+            messageField.setDisable(false);
+            recipientField.setDisable(false);
+            dateField.setDisable(false);
+        }
+    }
+
     @Override
     public void handleBackButtonNavigation(MouseEvent event) {
         Main.setScene(Flow.back());
@@ -51,6 +78,15 @@ public class TransferSceneController extends Controller implements BackButtonNav
         if (transferExecuted) clearAllTextFields();
         if (transferExecuted) hideAllLabels();
         transferExecuted = false;
+
+        if (comesFromDuePaymentsScene) {
+            amountField.setDisable(false);
+            IBANField.setDisable(false);
+            messageField.setDisable(false);
+            recipientField.setDisable(false);
+            dateField.setDisable(false);
+            comesFromDuePaymentsScene = false;
+        }
     }
 
     private void hideAllLabels() {
@@ -87,18 +123,24 @@ public class TransferSceneController extends Controller implements BackButtonNav
         if (!sufficientBalance(amount) && !insufficientBalanceLabel.isVisible()) insufficientBalanceLabel.setVisible(true);
         else if (sufficientBalance(amount) && insufficientBalanceLabel.isVisible()) insufficientBalanceLabel.setVisible(false);
 
-        String recipientActual = Main.getCurrentAccount().getIBAN();
+        String recipientActual = "";
+        try {
+            recipientActual = Main.getCurrentAccount().getIBAN();
+        } catch (NullPointerException e) {
+            recipientActual = duePayment.getSenderIBAN();
+        }
         if (!Objects.equals(recipientActual, IBAN)) {
             if (noLabelVisible()) {
                 // Creates the transfer if everything is correct
                 if (insufficientBalanceLabel.isVisible()) insufficientBalanceLabel.setVisible(false);
+                String finalRecipientActual = recipientActual;
                 HttpResponse<String> response = ErrorHandler.handlePossibleError(() -> {
                     HttpResponse<String> rep = null;
                     try {
                         rep = Unirest.post("https://flns-spring-test.herokuapp.com/api/transaction")
                                 .header("Authorization", "Bearer " + Main.getToken())
                                 .header("Content-Type", "application/json")
-                                .body("{\r\n    \"transactionTypeId\": 1,\r\n    \"senderIban\": \"" + recipientActual + "\",\r\n    \"recipientIban\": \"" + IBAN + "\",\r\n    \"currencyId\": 0,\r\n    \"transactionAmount\": " + amount + ",\r\n    \"comments\": \"" + message + "\"\r\n}")
+                                .body("{\r\n    \"transactionTypeId\": 1,\r\n    \"senderIban\": \"" + finalRecipientActual + "\",\r\n    \"recipientIban\": \"" + IBAN + "\",\r\n    \"currencyId\": 0,\r\n    \"transactionAmount\": " + amount + ",\r\n    \"comments\": \"" + message + "\"\r\n}")
                                 .asString();
                     } catch (UnirestException e) {
                         throw new RuntimeException(e);
@@ -107,15 +149,24 @@ public class TransferSceneController extends Controller implements BackButtonNav
                 });
 
                 transferExecuted = true;
-                Main.setScene(Flow.back());
-                Main.setScene(Flow.back());
-                Main.setScene(Flow.back());
+
+                if (comesFromDuePaymentsScene) {
+                    emulateBackButtonClicked();
+                    comesFromDuePaymentsScene = false;
+                } else {
+                    Main.setScene(Flow.back());
+                    Main.setScene(Flow.back());
+                    Main.setScene(Flow.back());
+                }
                 clearAllTextFields();
             }
         }
     }
 
     private boolean sufficientBalance(String amount) {
+        if (comesFromDuePaymentsScene) {
+            return selectedAccountAmount >= Double.parseDouble(amount);
+        }
         return Main.getCurrentAccount().getSubAccountList().get(0).getAmount() >= Double.parseDouble(amount);
     }
 
@@ -143,10 +194,11 @@ public class TransferSceneController extends Controller implements BackButtonNav
     void handleComponentKeyReleased(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
             emulateBackButtonClicked();
+            event.consume();
         } else if (event.getCode() == KeyCode.ENTER) {
             transfer();
+            event.consume();
         }
-        event.consume();
     }
 
 }

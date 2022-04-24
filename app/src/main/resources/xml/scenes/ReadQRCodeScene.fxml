@@ -39,7 +39,7 @@
                 </effect>
             </ComboBox>
             <Label fx:id="chooseAccountLabel" alignment="CENTER" layoutX="432.0" layoutY="330.0" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: rgb(230, 230, 230); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;" text="%ReadQRCodeScene.ChooseAccount" />
-            <Label fx:id="pleaseSelectAnAccountLabel" alignment="CENTER" layoutX="586.0" layoutY="313.0" onKeyReleased="#handleComponentKeyReleased" opacity="0.0" prefHeight="17.0" text="%DueTransactionsScene.PleaseSelectAnAccount" textFill="#c80000" />
+            <Label fx:id="pleaseSelectAnAccountLabel" alignment="CENTER" layoutX="482.0" layoutY="497.0" onKeyReleased="#handleComponentKeyReleased" opacity="0.0" prefHeight="17.0" text="%DueTransactionsScene.PleaseSelectAnAccount" textFill="#c80000" />
         </AnchorPane>
     </Pane>
 </Pane>

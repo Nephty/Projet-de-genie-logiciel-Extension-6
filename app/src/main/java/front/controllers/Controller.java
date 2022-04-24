@@ -202,7 +202,7 @@ public class Controller {
      */
     public static boolean isValidRecipient(String recipient) {
         if (recipient == null) return true;
-        return recipient.matches("^[a-zA-Z]*$");
+        return recipient.matches("^[a-zA-Z ]*$");
     }
 
     /**
