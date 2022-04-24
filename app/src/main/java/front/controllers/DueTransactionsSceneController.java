@@ -78,6 +78,25 @@ public class DueTransactionsSceneController extends Controller implements BackBu
         dueTransactionsTableView.setPlaceholder(new Label("No due transaction."));
     }
 
+    /**
+     * Reads a JSON file and puts the read transactions in the table view.
+     * The JSON files should be formatted as follows :
+     * {
+     *     "transaction0": {
+     *     "amount": 25.0,
+     *     "recipient_IBAN": "BE00000000000070",
+     *     "recipient_name": "John Smith",
+     *     "message": "Here is your refund."
+     *   },
+     *   "transaction1": {
+     *     "amount": 10.0,
+     *     "recipient_IBAN": "BE00000000000070",
+     *     "recipient_name": "Mary Collin",
+     *     "message": "Yesterday's restaurant."
+     *   }
+     * }
+     * @param file the JSON file to read
+     */
     private void updateDueTransactions(File file) {
         if (loadingTransactionsHistoryLabel.getOpacity() == 0.0) {
             int fadeInDuration = 1000;

@@ -80,6 +80,9 @@ public class GenerateQRCodeSceneController extends Controller implements BackBut
         invalidRecipientLabel.setVisible(false);
     }
 
+    /**
+     * Checks if every input is correct, and creates a new QR code if so at the given location.
+     */
     private void generateQRCode() {
         String amount = amountField.getText(), recipient = recipientField.getText(), IBAN = IBANField.getText(),
                 message = messageField.getText();

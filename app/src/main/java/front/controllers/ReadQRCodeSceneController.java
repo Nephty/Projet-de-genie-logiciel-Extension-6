@@ -80,10 +80,6 @@ public class ReadQRCodeSceneController extends Controller implements BackButtonN
         }
     }
 
-    private void emulateImportButtonClicked() {
-        handleScanButtonClicked(null);
-    }
-
     @FXML
     void handleChooseFileButtonClicked(MouseEvent event) {
         selectedFile = QRCodeFileChooser.showOpenDialog(Main.getStage());
@@ -104,6 +100,9 @@ public class ReadQRCodeSceneController extends Controller implements BackButtonN
         scanQRCode();
     }
 
+    /**
+     * Checks if every input is correct, and reads the selected QR code and execute the transfer if so.
+     */
     private void scanQRCode() {
         if (!fileChosen) {
             if (!noPathSelectedLabel.isVisible()) noPathSelectedLabel.setVisible(true);
