@@ -121,7 +121,7 @@ public class DueTransactionsSceneController extends Controller implements BackBu
                 data.add(new Transaction(Main.getUser().getFirstName() + " " + Main.getUser().getLastName(),
                         selectedSubAccount.getIBAN(), jsonObject.getString("recipient_name"),
                         jsonObject.getString("recipient_IBAN"), jsonObject.getDouble("amount"),
-                        today, Currencies.EUR, jsonObject.getString("message")));
+                        today, Currencies.EUR, jsonObject.getString("message"), false));
             }
             dueTransactionsTableView.setItems(FXCollections.observableArrayList(data));
             sleepAndFadeOutLoadingTransactionsLabelFadeThread.start(fadeInDuration, sleepDuration + fadeInDuration, loadingTransactionsHistoryLabel);

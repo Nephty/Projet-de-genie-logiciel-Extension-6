@@ -145,4 +145,15 @@ public class ArchivedAccountsScenesController extends Controller implements Back
         }
         return false;
     }
+
+    @FXML
+    void handleHistoryButtonClicked(MouseEvent event) {
+        if (archivedAccountsTableView.getSelectionModel().getSelectedItems().size() == 1) {
+            Account selection = archivedAccountsTableView.getSelectionModel().getSelectedItems().get(0);
+            ArrayList<SubAccount> subAccountsList = selection.getSubAccountList();
+            DeletedAccountTransactionsHistorySceneController.selectedSubAccount = subAccountsList.get(0);
+            Scenes.DeletedAccountTransactionsScene = SceneLoader.load("DeletedAccountTransactionsHistoryScene.fxml", Main.appLocale);
+            Main.setScene(Flow.forward(Scenes.DeletedAccountTransactionsScene));
+        }
+    }
 }

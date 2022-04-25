@@ -55,6 +55,7 @@ public class Profile {
      *
      * @param firstName                  A string of the firstname
      * @param lastName                   A string of the lastname
+     * @param username                   A string of the username
      * @param favoriteLanguage           A string of the favorite language (Locale.getDisplayName() format)
      * @param nationalRegistrationNumber A string of the national registration number
      */

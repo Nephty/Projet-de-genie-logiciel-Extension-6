@@ -11,5 +11,5 @@ public class Scenes {
             NotificationsScene, RequestsScene, RequestsStatusScene, RequestNewAccountScene,
             RequestTransferPermissionScene, FinancialProductsScene, ProductDetailsScene, TransactionsHistoryScene,
             VisualizeToolScene, ExportHistoryScene, TransferScene, EnterPINScene, ArchivedAccountsScene, RequestAccountRemovalScene,
-            DueTransactionsScene, GenerateQRCodeScene, ReadQRCodeScene;
+            DueTransactionsScene, GenerateQRCodeScene, ReadQRCodeScene, SignedInLanguageScene, DeletedAccountTransactionsScene;
 }

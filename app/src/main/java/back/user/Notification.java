@@ -4,6 +4,9 @@ import app.Main;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * @author François VION
@@ -17,6 +20,7 @@ public class Notification extends Communication {
 
     /**
      * Creates a notification with all the needed informations
+     *
      * @param senderName The String of the sender name
      * @param content The String of the content
      * @param date The String of the date
@@ -32,10 +36,48 @@ public class Notification extends Communication {
     }
 
     /**
+     * Fetch all the custom notifications and put them in a list
+     *
+     * @return The list of custom notifications
+     */
+
+    public static ArrayList<Notification> fetchCustomNotification() {
+        // Fetch all notifications
+        Unirest.setTimeouts(0, 0);
+        HttpResponse<String> response = ErrorHandler.handlePossibleError(() -> {
+            HttpResponse<String> rep = null;
+            try {
+                rep = Unirest.get("https://flns-spring-test.herokuapp.com/api/notification")
+                        .header("Authorization", "Bearer " + Main.getToken())
+                        .asString();
+            } catch (UnirestException e) {
+                throw new RuntimeException(e);
+            }
+            return rep;
+        });
+        ArrayList<Notification> notifList = new ArrayList<Notification>();
+        if (response != null) {
+            String body = response.getBody();
+            String toParse = body.substring(1, body.length() - 1);
+            ArrayList<String> notificationList = Portfolio.JSONArrayParser(toParse);
+            if (!notificationList.get(0).equals("")) {
+                for (String s : notificationList) {
+                    JSONObject obj = new JSONObject(s);
+                    // Keep only custom notifications
+                    if (obj.getInt("notificationType") == 4) {
+                        notifList.add(new Notification(obj.getString("senderName"), obj.getString("comments"), obj.getString("date"), obj.getLong("notificationId"), obj.getBoolean("isFlagged")));
+                    }
+                }
+            }
+        }
+        return notifList;
+    }
+
+    /**
      * @return A String to display the notification information
      */
     @Override
-    public String toString(){
+    public String toString() {
         return this.date + "      " + this.senderName + "     " + this.content;
     }
 
@@ -77,9 +119,9 @@ public class Notification extends Communication {
             HttpResponse<String> rep = null;
             try {
                 rep = Unirest.put("https://flns-spring-test.herokuapp.com/api/notification")
-                        .header("Authorization", "Bearer "+ Main.getToken())
+                        .header("Authorization", "Bearer " + Main.getToken())
                         .header("Content-Type", "application/json")
-                        .body("{\r\n    \"notificationId\": "+this.ID+",\r\n    \"isFlagged\": "+this.flag+"\r\n}")
+                        .body("{\r\n    \"notificationId\": " + this.ID + ",\r\n    \"isFlagged\": " + this.flag + "\r\n}")
                         .asString();
             } catch (UnirestException e) {
                 throw new RuntimeException(e);

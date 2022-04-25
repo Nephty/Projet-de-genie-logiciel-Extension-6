@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- @author Arnaud MOREAU -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
-<!-- @author Arnaud MOREAU -->
 <Pane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="front.controllers.ArchivedAccountsScenesController"
@@ -39,11 +38,14 @@
                 <columns>
                     <TableColumn fx:id="bankNameColumn" style="-fx-alignment: CENTER;" text="%common.BankNameColumn"/>
                     <TableColumn fx:id="IBANColumn" style="-fx-alignment: CENTER;" text="%ArchivedAccounts.IBANColumn"/>
-                    <TableColumn fx:id="accountTypeColumn" style="-fx-alignment: CENTER;" text="%common.AccountTypeColumn"/>
+                    <TableColumn fx:id="accountTypeColumn" style="-fx-alignment: CENTER;"
+                                 text="%common.AccountTypeColumn"/>
                     <TableColumn fx:id="transferPermissionsColumn" style="-fx-alignment: CENTER;"
                                  text="%common.TransferPermissionColumn"/>
-                    <TableColumn fx:id="subAccountsColumn" style="-fx-alignment: CENTER;" text="%common.SubAccountsColumn"/>
-                    <TableColumn fx:id="amountColumn" style="-fx-alignment: CENTER;" prefWidth="75.0" text="%common.AmountColumn" />
+                    <TableColumn fx:id="subAccountsColumn" style="-fx-alignment: CENTER;"
+                                 text="%common.SubAccountsColumn"/>
+                    <TableColumn fx:id="amountColumn" style="-fx-alignment: CENTER;" prefWidth="75.0"
+                                 text="%common.AmountColumn"/>
                 </columns>
             </TableView>
             <Label fx:id="lastUpdateTimeLabel" alignment="CENTER" layoutX="477.0" layoutY="19.0"
@@ -55,6 +57,15 @@
                     onMouseExited="#handleButtonMouseExited" prefHeight="30.0" prefWidth="170.0"
                     style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
                     text="%ArchivedAccounts.RestoreButton" textFill="#0a0a14">
+                <effect>
+                    <InnerShadow height="5.0" offsetX="-2.5" offsetY="-2.5" radius="2.0" width="5.0"/>
+                </effect>
+            </Button>
+            <Button fx:id="historyButton" layoutX="1075.0" layoutY="250.0" onKeyReleased="#handleComponentKeyReleased"
+                    onMouseClicked="#handleHistoryButtonClicked" onMouseEntered="#handleButtonMouseEntered"
+                    onMouseExited="#handleButtonMouseExited" prefHeight="30.0" prefWidth="170.0"
+                    style="-fx-background-color: rgb(210, 205, 200); -fx-border-color: rgb(10, 10, 20); -fx-border-width: 1.5; -fx-border-insets: -1.5; -fx-border-radius: 5;"
+                    text="%ProductDetailsScene.historyButton" textFill="#0a0a14">
                 <effect>
                     <InnerShadow height="5.0" offsetX="-2.5" offsetY="-2.5" radius="2.0" width="5.0"/>
                 </effect>
